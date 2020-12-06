@@ -23,39 +23,45 @@ public class GornerTableModel extends AbstractTableModel {
     public Double getStep() {
         return step;
     }
-    @Override
+
     public int getColumnCount() {
         return 2;
     }
-    @Override
+
     public int getRowCount() {
+        // Вычислить количество точек между началом и концом отрезка
+        // исходя из шага табулирования
         return new Double(Math.ceil((to-from)/step)).intValue()+1;
     }
-    @Override
-    public Object getValueAt(int arg0, int arg1) {
-        // Вычислить значение X как НАЧАЛО_ОТРЕЗКА + ШАГ*НОМЕР_СТРОКИ
-        double x = from + step*row;
-        if (col==0) {
-            return x;
-        } else {
-            Double result;
-            // Вычисление значения в точке по схеме Горнера.
-            // Вспомнить 1-ый курс и реализовать
-            // ...
-            return result;
+
+
+    //!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public Object getValueAt(int row, int col){
+        //вычислить Х как начало_отрезка + шаг * номер_строки
+        double x = from + step * row;
+                return x;
+            
+        
+    }
+    public Class<?> getColumnClass(int col) {
+        //и в 1-ом и во 2-ом столбце находятся значения типа Double в 3 Boolean
+        switch (col){
+            case 2:
+                return Boolean.class;
+            default:
+                return Double.class;
         }
     }
-    @Override
-    public Class<?> getColumnClass(int arg0) {
-        return Double.class;
-    }
-    @Override
-    public String getColumnName(int arg0) {
-        switch (col) {
-        case 0:
-            return "Значение X";
-        default:
-            return "Значение многочлена";
+
+    public String getColumnName(int col) {
+        switch (col){
+            case 0:
+                return "Значение Х";
+            case 1:
+                return "Значение многчлена";
+            default:
+                return "Значение больше нуля?";
         }
     }
 }
