@@ -31,7 +31,7 @@ import javax.swing.JTextField;
 public class Lab_3 extends JFrame {
     // Константы с исходным размером окна приложения
     private static final int WIDTH = 700;
-    private static final int HEIGHT = 500;
+    private static final int HEIGHT = 600;
     // Массив коэффициентов многочлена
     private Double[] coefficients;
     // Объект диалогового окна для выбора файлов
@@ -42,14 +42,15 @@ public class Lab_3 extends JFrame {
     private JMenuItem saveToTextMenuItem;
     private JMenuItem saveToGraphicsMenuItem;
     private JMenuItem searchValueMenuItem;
+    //для справки
+    private JMenuItem showInfMenuItem;
     // Поля ввода для считывания значений переменных
     private JTextField textFieldFrom;
     private JTextField textFieldTo;
     private JTextField textFieldStep;
     private Box hBoxResult;
     // Визуализатор ячеек таблицы
-    private GornerTableCellRenderer renderer = new
-    GornerTableCellRenderer();
+    private GornerTableCellRenderer renderer = new GornerTableCellRenderer();
     // Модель данных с результатами вычислений
     private GornerTableModel data;
 
@@ -62,8 +63,7 @@ public class Lab_3 extends JFrame {
         setSize(WIDTH, HEIGHT);
         Toolkit kit = Toolkit.getDefaultToolkit();
         // Отцентрировать окно приложения на экране
-        setLocation((kit.getScreenSize().width - WIDTH)/2,
-            (kit.getScreenSize().height - HEIGHT)/2);
+        setLocation((kit.getScreenSize().width - WIDTH)/2,(kit.getScreenSize().height - HEIGHT)/2);
         //создание меню
         JMenuBar menuBar = new JMenuBar();
         //Установить меню в качестве главного меню приложения
@@ -75,6 +75,9 @@ public class Lab_3 extends JFrame {
         //создаем пункт "таблица"
         JMenu tableMenu = new JMenu("Таблица");
         menuBar.add(tableMenu);
+        //создаем пункт справка
+        JMenu referenceMenu = new JMenu("Справка");
+        menuBar.add(referenceMenu);
         Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -110,8 +113,7 @@ public class Lab_3 extends JFrame {
                 if (fileChooser.showSaveDialog(Lab_3.this) == JFileChooser.APPROVE_OPTION);
                     // Если результат его показа успешный,
                     // сохранить данные в двоичный файл
-                    saveToGraphicsFile(
-                    fileChooser.getSelectedFile());
+                    saveToGraphicsFile(fileChooser.getSelectedFile());
             }
         };
         // Добавить соответствующий пункт подменю в меню "Файл"
@@ -137,6 +139,15 @@ public class Lab_3 extends JFrame {
         // По умолчанию пункт меню является недоступным (данных ещѐ нет)
         searchValueMenuItem.setEnabled(false);
         
+        Action refereceOboutMe = new AbstractAction("Справка") {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                JOptionPane.showMessageDialog(Lab_3.this, "Автор - Болко, 8 Группа!", "Справка", JOptionPane.INFORMATION_MESSAGE);
+            }
+        };
+        //добавить действие в подменю справка
+        showInfMenuItem = referenceMenu.add(refereceOboutMe);
+        showInfMenuItem.setEnabled(true);
         // Создать область с полями ввода для границ отрезка и шага
         // Создать подпись для ввода левой границы отрезка
         JLabel labelForFrom = new JLabel("X изменяется на интервале от:");
@@ -162,6 +173,7 @@ public class Lab_3 extends JFrame {
         // Установить максимальный размер равный предпочтительному, чтобы
         // предотвратить увеличение размера поля ввода
         textFieldStep.setMaximumSize(textFieldStep.getPreferredSize());
+
         // Создать контейнер 1 типа "коробка с горизонтальной укладкой"
         Box hboxRange = Box.createHorizontalBox();
         // Задать для контейнера тип рамки "объѐмная"
@@ -283,9 +295,7 @@ public class Lab_3 extends JFrame {
         try {
             // Создать новый байтовый поток вывода, направленный в указанный файл
 
-            DataOutputStream out = new DataOutputStream(new
-
-            FileOutputStream(selectedFile));
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
 
             // Записать в поток вывода попарно значение X в точке, значение многочлена в точке
 

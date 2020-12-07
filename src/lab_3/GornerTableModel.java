@@ -7,8 +7,9 @@ public class GornerTableModel extends AbstractTableModel {
     private Double from;
     private Double to;
     private Double step;
-    public GornerTableModel(Double from, Double to, Double step, Double[]coefficients) {
+    private double result[] = new double[1];
 
+    public GornerTableModel(Double from, Double to, Double step, Double[]coefficients) {
         this.from = from;
         this.to = to;
         this.step = step;
@@ -25,7 +26,7 @@ public class GornerTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 2;
+        return 3;
     }
 
     public int getRowCount() {
@@ -40,9 +41,32 @@ public class GornerTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int col){
         //вычислить Х как начало_отрезка + шаг * номер_строки
         double x = from + step * row;
+        switch (col) {
+            case 0:
+                //если запрашивается значение 1-го столбца, то это Х
                 return x;
-            
-        
+            case 1:
+                //если запрашивается значение 2-го столбца, то это значение многочлена
+                result[0] = 0.0;
+                for (int i = 0; i < coefficients.length; i++) {
+                    result[0] += Math.pow(x, coefficients.length - 1 - i) * coefficients[i];
+                }
+                return result[0];
+            default:
+                result[0] = 0.0;
+                for (int i = 0; i < coefficients.length; i++) {
+                    result[0] += Math.pow(x, coefficients.length - 1 - i) * coefficients[i];
+                }
+                boolean flag = false;
+                if (result[0] > 0){
+                    flag = true;
+                }
+                if (flag == true){
+                    return true;
+                } else {
+                    return false;
+                }
+        }    
     }
     public Class<?> getColumnClass(int col) {
         //и в 1-ом и во 2-ом столбце находятся значения типа Double в 3 Boolean
